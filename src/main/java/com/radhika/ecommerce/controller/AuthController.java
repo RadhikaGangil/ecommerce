@@ -1,6 +1,7 @@
 package com.radhika.ecommerce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.radhika.ecommerce.entity.User;
@@ -17,15 +18,23 @@ public class AuthController {
     @Autowired
     private UserService service;
 
-    // ✅ REGISTER API
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        return service.register(user);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        try {
+            String result = service.register(user);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 
-    // ✅ LOGIN API
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        return service.login(user);
+    public ResponseEntity<?> login(@RequestBody User user) {
+        try {
+            String token = service.login(user);
+            return ResponseEntity.ok(token);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 }
