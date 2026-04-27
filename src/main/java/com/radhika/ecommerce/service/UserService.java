@@ -2,6 +2,8 @@ package com.radhika.ecommerce.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.radhika.ecommerce.entity.User;
 import com.radhika.ecommerce.repository.UserRepository;
 
@@ -11,7 +13,41 @@ public class UserService {
     @Autowired
     private UserRepository repo;
 
-    public User saveUser(User user) {
-        return repo.save(user);
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    public String register(User user) {
+
+        // check duplicate email
+        if (repo.findByEmail(user.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        if (user.getEmail() == null || !user.getEmail().contains("@")) {
+            throw new RuntimeException("Invalid email");
+        }
+
+        if (user.getPassword() == null || user.getPassword().length() < 6) {
+            throw new RuntimeException("Password must be at least 6 characters");
+        }
+
+        user.setPassword(encoder.encode(user.getPassword()));
+
+        repo.save(user);
+
+        return "User Registered Successfully";
+    }
+
+    public String login(User user) {
+
+        // Step 1: email check
+        User dbUser = repo.findByEmail(user.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Step 2: password match (IMPORTANT)
+        if (!encoder.matches(user.getPassword(), dbUser.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return "Login Successful";
     }
 }
