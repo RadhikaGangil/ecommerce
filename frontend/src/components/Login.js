@@ -8,7 +8,6 @@ function Login() {
     password: ""
   });
 
-  // input change handle
   const handleChange = (e) => {
     setUser({
       ...user,
@@ -16,16 +15,12 @@ function Login() {
     });
   };
 
-  // login submit
   const handleSubmit = async () => {
 
-    // basic validation
     if (!user.email || !user.password) {
-      alert("Please fill all fields");
+      alert("Fill all fields");
       return;
     }
-
-    console.log("Login Data:", user);
 
     try {
       const res = await axios.post(
@@ -33,21 +28,21 @@ function Login() {
         user
       );
 
-      console.log("Token:", res.data);
-
       // 🔥 TOKEN STORE
       localStorage.setItem("token", res.data);
 
       alert("Login Successful");
+      window.location.href = "/dashboard";
+
+      console.log("Token:", res.data);
 
     } catch (err) {
+      console.log(err);
 
-      console.log("Error:", err);
-
-      if (err.response && err.response.data) {
-        alert("Error: " + err.response.data);
+      if (err.response) {
+        alert(err.response.data);
       } else {
-        alert("Server not responding");
+        alert("Server error");
       }
     }
   };

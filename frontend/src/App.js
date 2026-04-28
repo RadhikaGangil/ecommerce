@@ -1,41 +1,58 @@
-// import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
 import React from "react";
-import Register from "./components/Register";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 
-// function App() {
-//   return (
-//     <div>
-//       <Register />
-//     </div>
-//   );
-// }
+// 🔐 Protected Route
+function ProtectedRoute({ children }) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+}
+
+// 📊 Dashboard Page
+function Dashboard() {
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>Dashboard Page 🔐</h2>
+
+      <button
+        onClick={() => {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+        }}
+      >
+        Logout
+      </button>
+    </div>
+  );
+}
+
+// 🚀 Main App
 function App() {
-  return <Login />;
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        {/* Public Route */}
+        <Route path="/" element={<Login />} />
+
+        {/* Protected Route */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
