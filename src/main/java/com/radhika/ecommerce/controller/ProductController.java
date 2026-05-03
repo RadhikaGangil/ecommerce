@@ -17,21 +17,31 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    // 🔹 Add Product
+    // ➕ Add Product
     @PostMapping("/add")
     public Product addProduct(@RequestBody Product product) {
         return service.addProduct(product);
     }
 
-    // 🔹 Get All Products
+    // 📋 Get All Products
     @GetMapping("/all")
     public List<Product> getAllProducts() {
         return service.getAllProducts();
     }
 
-    // 🔹 Get Product by ID
+    // 🔍 Get by ID
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
         return service.getProductById(id);
+    }
+
+    // 🔥 Search / Filter API
+    @GetMapping("/search")
+    public List<Product> searchProducts(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double min,
+            @RequestParam(required = false) Double max) {
+
+        return service.searchProducts(name, min, max);
     }
 }

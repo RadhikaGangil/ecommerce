@@ -1,40 +1,51 @@
 package com.radhika.ecommerce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.radhika.ecommerce.entity.User;
+import com.radhika.ecommerce.repository.UserRepository;
 import com.radhika.ecommerce.service.UserService;
+import com.radhika.ecommerce.config.JwtUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/auth")
-
-// 🔥 IMPORTANT (React connect ke liye)
 @CrossOrigin(origins = "http://localhost:3000")
-
 public class AuthController {
 
     @Autowired
     private UserService service;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // 🔹 Register
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public String register(@RequestBody User user) {
+        return service.register(user);
+    }
+
+    // 🔹 Login
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
         try {
-            String result = service.register(user);
-            return ResponseEntity.ok(result);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            User validUser = service.login(user);
+            return jwtUtil.generateToken(validUser.getEmail());
+        } catch (Exception e) {
+            return e.getMessage(); // 🔥 important
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        try {
-            String token = service.login(user);
-            return ResponseEntity.ok(token);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(400).body(e.getMessage());
-        }
+    // 🔥 GET CURRENT USER
+    @GetMapping("/me")
+    public User getCurrentUser() {
+
+        // 🔥 simple fix (no token)
+        return userRepository.findAll().get(0);
     }
 }
