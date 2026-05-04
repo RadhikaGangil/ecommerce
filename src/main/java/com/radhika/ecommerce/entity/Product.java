@@ -12,14 +12,16 @@ public class Product {
     private String name;
     private double price;
     private String description;
+    private String category; // ✅ already added
 
     public Product() {
     }
 
-    public Product(String name, double price, String description) {
+    public Product(String name, double price, String description, String category) {
         this.name = name;
         this.price = price;
         this.description = description;
+        this.category = category;
     }
 
     public Long getId() {
@@ -48,5 +50,15 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    // 🔥 IMPORTANT PART (missing tha)
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

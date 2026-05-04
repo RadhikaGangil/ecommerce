@@ -1,6 +1,6 @@
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 function ProductDetails() {
 
@@ -12,15 +12,32 @@ function ProductDetails() {
       .then(res => setProduct(res.data));
   }, []);
 
+  const addToCart = async () => {
+    try {
+      await axios.post("http://localhost:8080/api/cart/add", {
+        productId: product.id,
+        quantity: 1
+      });
+
+      alert("Added to Cart ✅");
+window.location.href = "/cart";   // 🔥 redirect
+
+    } catch (err) {
+      console.log(err);
+      alert("Error ❌");
+    }
+  };
+
   if (!product) return <p>Loading...</p>;
 
   return (
-    <div className="container">
+    <div style={{ textAlign: "center" }}>
       <h2>{product.name}</h2>
-      <p>Price: ₹ {product.price}</p>
-      <p>Category: {product.category}</p>
+      <p>₹ {product.price}</p>
 
-      <button>Add to Cart</button>
+      <button onClick={addToCart}>
+        Add to Cart
+      </button>
     </div>
   );
 }

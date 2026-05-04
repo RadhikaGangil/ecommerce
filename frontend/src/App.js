@@ -48,6 +48,9 @@ import AdminPage from "./components/AdminPage";
 import Products from "./components/ProductList";
 import ProductDetails from "./components/ProductDetails";
 import "./styles.css";  
+import Cart from "./components/Cart";
+
+
 
 function App() {
   return (
@@ -60,6 +63,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/products" element={<Products />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </BrowserRouter>
   );
