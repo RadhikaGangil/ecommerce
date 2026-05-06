@@ -12,8 +12,6 @@ public class Cart {
     private Long productId;
     private int quantity;
 
-    // 🔹 Getter Setter
-
     public Long getId() {
         return id;
     }

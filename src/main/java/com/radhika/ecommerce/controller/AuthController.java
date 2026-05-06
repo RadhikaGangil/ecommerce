@@ -1,6 +1,7 @@
 package com.radhika.ecommerce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.radhika.ecommerce.entity.User;
@@ -32,13 +33,23 @@ public class AuthController {
 
     // 🔹 Login
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        try {
-            User validUser = service.login(user);
-            return jwtUtil.generateToken(validUser.getEmail());
-        } catch (Exception e) {
-            return e.getMessage(); // 🔥 important
+    public ResponseEntity<?> login(@RequestBody User user) {
+
+        User existingUser = userRepository.findByEmail(user.getEmail());
+
+        // ❌ email not found
+        if (existingUser == null) {
+            return ResponseEntity.badRequest().body("User not found");
         }
+
+        // ❌ wrong password
+        if (!existingUser.getPassword().equals(user.getPassword())) {
+            return ResponseEntity.badRequest().body("Invalid password");
+        }
+
+        // ✅ SUCCESS
+        return ResponseEntity.ok("Login Success");
+
     }
 
     // 🔥 GET CURRENT USER
