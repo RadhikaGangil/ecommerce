@@ -56,9 +56,6 @@
 //     }
 // }
 
-
-
-
 package com.radhika.ecommerce.config;
 
 import jakarta.servlet.*;
@@ -74,11 +71,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+            HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
 
-        // 🔥 अभी कुछ check नहीं कर रहे
+        
         filterChain.doFilter(request, response);
     }
 }

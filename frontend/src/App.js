@@ -12,53 +12,74 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles.css";
 
 function App() {
+
   return (
+
     <BrowserRouter>
 
       <Routes>
 
-        {/* 🔥 DEFAULT PAGE = LOGIN */}
+        {/* 🔥 LOGIN PAGE */}
         <Route path="/" element={<Login />} />
 
-        {/* 🔐 AUTH */}
+        {/* 🔥 AUTH PAGES */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* 🔒 PROTECTED ROUTES */}
-        <Route path="/home" element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        } />
+        {/* 🔒 HOME PAGE */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/admin" element={
-          <ProtectedRoute>
-            <AdminPage />
-          </ProtectedRoute>
-        } />
+        {/* 🔒 ADMIN PAGE */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/products" element={
-          <ProtectedRoute>
-            <Products />
-          </ProtectedRoute>
-        } />
+        {/* 🔒 PRODUCTS */}
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <Products />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/product/:id" element={
-          <ProtectedRoute>
-            <ProductDetails />
-          </ProtectedRoute>
-        } />
+        {/* 🔒 PRODUCT DETAILS */}
+        <Route
+          path="/product/:id"
+          element={
+            <ProtectedRoute>
+              <ProductDetails />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/cart" element={
-          <ProtectedRoute>
-            <Cart />
-          </ProtectedRoute>
-        } />
+        {/* 🔒 CART */}
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
 
     </BrowserRouter>
+
   );
 }
-
 export default App;

@@ -341,3 +341,14 @@ table th {
   background: #111827;
   color: white;
 }
+
+.role-select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #e5e7eb;
+  font-size: 15px;
+}
